@@ -1,5 +1,11 @@
 import random
+import json
+import os
 from pico2d import *
+import game_framework
+import title_state
+
+name = "Main"
 
 running = None
 
@@ -10,6 +16,23 @@ class Background:
         self.image.draw(400,300)
 
 class Enemy():
+    global enemy_sheet
+    def __init__(self):
+        self.x = 30
+        self.y = 450
+        self.movex = 0
+        self.movey = 0
+        self.frame = 0
+        self.status = 0
+    def draw(self):
+        if (self.status == 0):
+            enemy_sheet.clip_draw(self.frame * 30, 90, 30, 30, self.x, self.y)
+        elif (self.status == 1):
+            enemy_sheet.clip_draw(self.frame * 30, 60, 30, 30, self.x, self.y)
+        elif (self.status == 2):
+            enemy_sheet.clip_draw(self.frame * 30, 30, 30, 30, self.x, self.y)
+        elif (self.status == 3):
+            enemy_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
     pass
 
 class Character:
@@ -29,7 +52,6 @@ class Character:
         elif(self.x < 30 and self.x > 770 and self.y < 30 and self.y > 570):
             self.x = 0
             self.y = 0
-
         self.frame = (self.frame + 1) % 4
 
     def draw(self):
@@ -42,8 +64,6 @@ class Character:
         elif (self.status == 3):
             character_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
 
-
-
 character = Character()
 
 def handle_events():
@@ -55,6 +75,9 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+            game_framework.change_state(title_state)
+
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
             if(character.movey != 0):
                 character.movey = 0
@@ -80,12 +103,15 @@ def handle_events():
 
 def main():
     global character_sheet
+    global enemy_sheet
     global charcter
+    global enemy
     global running
     running = True
     open_canvas(800,600,1)
 
     character_sheet = load_image('CharacterSheet.png')
+    enemy_sheet = load_image('EnemySheet.png')
     background = Background()
 
     while running:
