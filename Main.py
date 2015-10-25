@@ -34,11 +34,15 @@ class Character:
 
     def draw(self):
         if (self.status == 0):
-            if(self.x >= 30 or self.x <= 770):
-                character_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
-
+            character_sheet.clip_draw(self.frame * 30, 90, 30, 30, self.x, self.y)
         elif (self.status == 1):
-            pass
+            character_sheet.clip_draw(self.frame * 30, 60, 30, 30, self.x, self.y)
+        elif (self.status == 2):
+            character_sheet.clip_draw(self.frame * 30, 30, 30, 30, self.x, self.y)
+        elif (self.status == 3):
+            character_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
+
+
 
 character = Character()
 
@@ -51,21 +55,27 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            if(character.movey != 0):
-                character.movey = 0
-            character.movex = 3
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
             if(character.movey != 0):
                 character.movey = 0
+            character.status = 0
             character.movex = -3
+
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+            if(character.movey != 0):
+                character.movey = 0
+            character.status = 1
+            character.movex = 3
+
         elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
             if(character.movex != 0):
                 character.movex = 0
+            character.status = 2
             character.movey = 3
         elif event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
             if(character.movex != 0):
                 character.movex = 0
+            character.status = 3
             character.movey = -3
 
 def main():
