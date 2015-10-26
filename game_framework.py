@@ -99,5 +99,5 @@ def test_game_framework():
 
 
 
-if __name__ == '__main__':
+if __name__ == '__Frame__':
     test_game_framework()
