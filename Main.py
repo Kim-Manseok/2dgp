@@ -4,6 +4,8 @@ import os
 from pico2d import *
 import game_framework
 import title_state
+import start_state
+
 
 name = "Main"
 
@@ -18,12 +20,26 @@ class Background:
 class Enemy():
     global enemy_sheet
     def __init__(self):
-        self.x = 30
-        self.y = 450
-        self.movex = 0
-        self.movey = 0
+        self.x = 350
+        self.y = 170
         self.frame = 0
         self.status = 0
+
+    def update(self):
+        if(self.status == 0):
+            self.x = self.x - 3
+            if(self.x <= 250):
+                self.status =1
+        if(self.status == 1):
+            self.x = self.x + 3
+            if(self.x >= 450):
+                self.status = 0
+
+        elif(self.x <= 50 or self.x >= 300):
+            self.x = self.x - 3
+
+        self.frame = (self.frame + 1) % 4
+
     def draw(self):
         if (self.status == 0):
             enemy_sheet.clip_draw(self.frame * 30, 90, 30, 30, self.x, self.y)
@@ -33,7 +49,8 @@ class Enemy():
             enemy_sheet.clip_draw(self.frame * 30, 30, 30, 30, self.x, self.y)
         elif (self.status == 3):
             enemy_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
-    pass
+
+enemy = Enemy()
 
 class Character:
     global character_sheet
@@ -118,6 +135,8 @@ def main():
         handle_events()
         clear_canvas()
         background.draw()
+        enemy.update()
+        enemy.draw()
         character.update()
         character.draw()
         update_canvas()
