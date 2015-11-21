@@ -13,10 +13,12 @@ def enter():
     open_canvas()
     image =load_image('kpu_credit.png')
 
+
 def exit():
     global image
     del(image)
     close_canvas()
+
 
 def update():
     global  logo_time
@@ -28,11 +30,13 @@ def update():
     delay(0.01)
     logo_time += 0.01
 
+
 def draw():
     global image
     clear_canvas()
     image.draw(400, 300)
     update_canvas()
+
 
 def handle_events():
     events = get_events()

@@ -11,14 +11,17 @@ name = "Main"
 
 running = None
 
+
 class Background:
     def __init__(self):
         self.image = load_image('background1.png')
     def draw(self):
         self.image.draw(400,300)
 
+
 class Enemy():
     global enemy_sheet
+
     def __init__(self):
         self.x = 350
         self.y = 170
@@ -52,6 +55,7 @@ class Enemy():
 
 enemy = Enemy()
 
+
 class Character:
     global character_sheet
     def __init__(self):
@@ -82,6 +86,7 @@ class Character:
             character_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
 
 character = Character()
+
 
 def handle_events():
     global running
@@ -117,6 +122,7 @@ def handle_events():
                 character.movex = 0
             character.status = 3
             character.movey = -3
+
 
 def main():
     global character_sheet

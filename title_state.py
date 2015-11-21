@@ -10,9 +10,11 @@ def enter():
     global image
     image = load_image('title.png')
 
+
 def exit():
     global image
     del(image)
+
 
 def handle_events():
     events = get_events()
@@ -25,15 +27,11 @@ def handle_events():
             elif(event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 game_framework.change_state(Main)
 
+
 def draw():
     clear_canvas()
     image.draw(400,300)
     update_canvas()
-
-
-
-
-
 
 
 def update():
