@@ -4,18 +4,14 @@ import os
 from pico2d import *
 import game_framework
 import title_state
+from Tile import Tile
 
 
 name = "MainState"
 
+Tile = None
 running = None
 stage_state = 0
-
-
-class Tile:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
 
 
 class Background:
@@ -93,6 +89,7 @@ class Character:
         self.movey = 0
         self.frame = 0
         self.status = 0
+        self.live = 0
 
     def update(self):
         if 800 >= self.x >= 50 and 600 >= self.y >= 50:
@@ -101,8 +98,7 @@ class Character:
         elif 800> self.x < 50 and 600 > self.y < 50:
             self.x = 0
             self.y = 0
-        if self.x >500:
-            stage_state += 1
+            self.live = 1
         self.frame = (self.frame + 1) % 4
 
     def draw(self):
@@ -114,6 +110,8 @@ class Character:
             character_sheet.clip_draw(self.frame * 30, 30, 30, 30, self.x, self.y)
         elif self.status == 3:
             character_sheet.clip_draw(self.frame * 30, 0, 30, 30, self.x, self.y)
+        elif self.status == 4:
+            character_sheet.clip_draw(150, 0, 30, 30, self.x, self.y)
 
 character = Character()
 
@@ -132,28 +130,32 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             game_framework.change_state(title_state)
 
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-            if character.movey != 0:
-                character.movey = 0
-            character.status = 0
-            character.movex = -3
+        if character.live == 0:
+            if event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
+                if character.movey != 0:
+                    character.movey = 0
+                character.status = 0
+                character.movex = -3
 
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            if character.movey != 0:
-                character.movey = 0
-            character.status = 1
-            character.movex = 3
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+                if character.movey != 0:
+                    character.movey = 0
+                character.status = 1
+                character.movex = 3
 
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
-            if character.movex != 0:
-                character.movex = 0
-            character.status = 2
-            character.movey = 3
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
-            if character.movex != 0:
-                character.movex = 0
-            character.status = 3
-            character.movey = -3
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
+                if character.movex != 0:
+                    character.movex = 0
+                character.status = 2
+                character.movey = 3
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
+                if character.movex != 0:
+                    character.movex = 0
+                character.status = 3
+                character.movey = -3
+
+        elif character.live == 1:
+            character.status = 4
 
 
 def main():
